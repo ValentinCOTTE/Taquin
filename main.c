@@ -7,10 +7,11 @@
 typedef struct
 {
     int tab[3][3];
-    int ligne;
-    int colonne;
+    int ligne;  //positon x de la case vide
+    int colonne;    //position y de la case vide
 } Etat;
 
+//Affiche l'etat du taquin
 void afficher (Etat etat)
 {
     int i,j;
@@ -20,11 +21,11 @@ void afficher (Etat etat)
         {
             if (etat.ligne == i && etat.colonne == j)
             {
-                printf("\t");
+                printf("X ");
             }
             else
             {
-                printf("%d\t",etat.tab[i][j]);
+                printf("%d ",etat.tab[i][j]);
             }
         }
         printf("\n");
@@ -32,30 +33,33 @@ void afficher (Etat etat)
     printf("\n");
 }
 
+//la case vide est-elle a gauche?
 bool testG(Etat tab)
 {
     if (tab.colonne == 0) return false;
     else {return true;}
 }
-
+//droite?
 bool testD(Etat tab)
 {
     if (tab.colonne == 2) return false;
     else {return true;}
 }
-
+//en haut?
 bool testH(Etat tab)
 {
     if (tab.ligne == 0) return false;
     else {return true;}
 }
-
+//en bas?
 bool testB(Etat tab)
 {
     if (tab.ligne == 2) return false;
     else {return true;}
 }
 
+//deplace la case vide à gauche
+//donc on va échanger sa valeur avec la case à sa gauche
 Etat gauche (Etat etat)
 {
     int colonne = etat.colonne;
@@ -67,6 +71,7 @@ Etat gauche (Etat etat)
     return etat;
 }
 
+//deplace la case vide à droite...
 Etat droite (Etat etat)
 {
     int colonne = etat.colonne;
@@ -78,6 +83,7 @@ Etat droite (Etat etat)
     return etat;
 }
 
+//deplace la case vide en haut...
 Etat haut (Etat etat)
 {
     int colonne = etat.colonne;
@@ -89,6 +95,7 @@ Etat haut (Etat etat)
     return etat;
 }
 
+//deplace la case vide en bas...
 Etat bas (Etat etat)
 {
     int colonne = etat.colonne;
@@ -124,7 +131,7 @@ int distance (int ligne1, int colonne1, int ligne2, int colonne2)
 
 }
 //Calcule la distance manhattan
-int man (Etat ini)
+int manhattan (Etat ini)
 {
     int a,i,j, result=0;
     for ( a = 0; a < 9; a++)
@@ -144,6 +151,7 @@ int man (Etat ini)
 }
 
 // crée un taquin aleatoire valide
+//on va simplement crée un taquin resolu, et le mélanger aléatoirement
 Etat aleatoire()
 {
     Etat tab = resolu();
@@ -165,7 +173,7 @@ int main()
     afficher(resolu());
     Etat tab = aleatoire();
     afficher(tab);
-    printf("%d", man(tab));
+    printf("%d", manhattan(tab));
 
 
     return 0;
