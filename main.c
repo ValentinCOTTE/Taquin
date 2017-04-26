@@ -39,6 +39,10 @@ struct EtatFr* Cree_EtatFr(Etat etat, char* chemin, int f, struct EtatFr* next){
 }
 
 struct EtatFr* addFr(struct EtatFr* etatFr,Etat etat,char* chemin,int f){
+    if(etatFr==NULL){
+        struct EtatFr* nouveau=Cree_EtatFr(etat,chemin,f,etatFr);
+        return nouveau;
+    }
     if (f<=etatFr->f){
         struct EtatFr* nouveau=Cree_EtatFr(etat,chemin,f,etatFr);
         return nouveau;
@@ -58,10 +62,6 @@ struct EtatFr* addFr(struct EtatFr* etatFr,Etat etat,char* chemin,int f){
 struct EtatFr* suppTete(struct EtatFr* tete){
     tete=tete->next;
     return tete;
-}
-
-Etat getFr(struct EtatFr* frontiere){
-    return frontiere->etat;
 }
 
 struct EtatEx{
@@ -164,29 +164,29 @@ void afficher (Etat etat)
     printf("\n");
 }
 
-//la case vide est-elle a gauche?
-bool testG(Etat tab)
+//la case vide est-elle a gauche? 1 si oui, 0 sinon
+int testG(Etat tab)
 {
-    if (tab.colonne == 0) return false;
-    else {return true;}
+    if (tab.colonne == 0) return 0;
+    else {return 1;}
 }
 //droite?
-bool testD(Etat tab)
+int testD(Etat tab)
 {
-    if (tab.colonne == 2) return false;
-    else {return true;}
+    if (tab.colonne == 2) return 0;
+    else {return 1;}
 }
 //en haut?
-bool testH(Etat tab)
+int testH(Etat tab)
 {
-    if (tab.ligne == 0) return false;
-    else {return true;}
+    if (tab.ligne == 0) return 0;
+    else {return 1;}
 }
 //en bas?
-bool testB(Etat tab)
+int testB(Etat tab)
 {
-    if (tab.ligne == 2) return false;
-    else {return true;}
+    if (tab.ligne == 2) return 0;
+    else {return 1;}
 }
 
 //deplace la case vide à gauche
@@ -262,7 +262,7 @@ int distance (int ligne1, int colonne1, int ligne2, int colonne2)
 
 }
 //Calcule la distance manhattan (de l'etat actuel à l'état final)
-int manhattan (Etat init)
+int h(Etat init)
 {
     int a,i,j, result=0;
     for ( a = 0; a < 9; a++)
@@ -300,31 +300,99 @@ Etat aleatoire()
 	return tab;
 }
 
+char* ecrire(char* chaine,char c){
+
+    int nombreDeCaracteres = 0;
+    printf("%c",chaine);
+    char caractereActuel = chaine;
+    printf("\n plop");
+    while(caractereActuel != 'F'); // On boucle tant qu'on n'est pas arrivé à la fin F
+    {
+        nombreDeCaracteres++;
+    }
+    printf("\n plip");
+    chaine[nombreDeCaracteres]=c;
+    chaine[nombreDeCaracteres+1]='F';
+    return chaine;
+}
+
 int longueurChaine(char* chaine)
 {
     int nombreDeCaracteres = 0;
-    char i;
-    char caractereActuel = 0;
+    char caractereActuel = chaine[0];
 
-    do
+    while(caractereActuel != 'F'); // On boucle tant qu'on n'est pas arrivé à la fin F
     {
         caractereActuel = chaine[nombreDeCaracteres];
         nombreDeCaracteres++;
-
     }
-    while(caractereActuel != '\0'); // On boucle tant qu'on n'est pas arrivé à l'\0
-
-    nombreDeCaracteres--; // On retire 1 caractère de long pour ne pas compter le caractère \0
-
     return nombreDeCaracteres;
 }
 
+void afficherChaine(char* chaine)
+{
+    int nombreDeCaracteres = 0;
+    char caractereActuel = chaine[0];
+
+     while(caractereActuel != 'F');
+    {
+        printf("%c",caractereActuel);
+        nombreDeCaracteres++;
+    }
+}
+
+/*
+char* solution(Etat initial){
+    char chemin[100];
+    chemin[0]='F'
+    Etat actu=initial;
+    struct EtatEx* listeEx=Cree_EtatEx(initial,h(initial),NULL,NULL);
+    struct EtatFr* listeFr=NULL;
+
+    if(testB(initial)==1){
+        Etat a=bas(initial);
+        char* b=ecrire(chemin,'B');
+        int c=1+h(initial);
+        listeFr=addFr(listeFr,a,b,c);
+    }
+    if(testH(initial)==1){
+        listeFr=addFr(listeFr,haut(initial),ecrire(chemin,'H'),1+h(initial));
+    }
+    if(testG(initial)==1){
+        listeFr=addFr(listeFr,gauche(initial),ecrire(chemin,'G'),1+h(initial));
+    }
+    if(testD(initial)==1){
+        listeFr=addFr(listeFr,droite(initial),ecrire(chemin,'D'),1+h(initial));
+    }
+
+    while(etatsEgaux(actu,resolu())!=1){
+        actu=listeFr->etat;
+        chemin=listeFr->chemin;
+        listeFr=suppTete(listeFr);
+        if(testB(actu)==1){
+        listeFr=addFr(listeFr,bas(actu),ecrire(chemin,'B'),1+longueurChaine(chemin)+h(actu));
+        }
+        if(testH(actu)==1){
+            listeFr=addFr(listeFr,haut(actu),ecrire(chemin,'H'),1+longueurChaine(chemin)+h(actu));
+        }
+        if(testG(actu)==1){
+            listeFr=addFr(listeFr,gauche(actu),ecrire(chemin,'G'),1+longueurChaine(chemin)+h(actu));
+        }
+        if(testD(actu)==1){
+            listeFr=addFr(listeFr,droite(actu),ecrire(chemin,'D'),1+longueurChaine(chemin)+h(actu));
+        }
+    }
+    return chemin;
+}
+*/
 int main()
 {
     afficher(resolu());
-    Etat tab = aleatoire();
-    afficher(tab);
-    printf("%d", manhattan(tab));
+    Etat etat = aleatoire();
+    afficher(etat);
+    printf("\n");
+    //afficherChaine(solution(etat));
+
 
 
     return 0;
