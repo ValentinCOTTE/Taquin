@@ -4,7 +4,6 @@ void afficherChaine(char* chaine)
     char caractereActuel = chaine[i];
      while(caractereActuel!='\0')
     {
-        printf("%c",caractereActuel);
         i++;
         caractereActuel=chaine[i];
     }
