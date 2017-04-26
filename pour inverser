@@ -16,3 +16,21 @@ void afficherChaine(char* chaine)
     }
 
 }
+
+
+////////////////////////
+
+void afficherChaine(char* chaine)
+{
+    int i = 0;
+    char caractereActuel = chaine[i];
+
+    i=longueurChaine(chaine);
+
+    for(i;i>=0;i--)
+    {
+        printf("%c",chaine[i]);
+
+    }
+
+}
