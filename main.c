@@ -17,7 +17,7 @@ struct EtatFr
     struct Etat etat;
     char* chemin;
     int f;  //valeur de la distance g()+h()
-    struct EtatFr* next;   //contient un noeud avec une valeur de f est inférieur
+    struct EtatFr* next;   //contient un noeud avec une valeur de f est infÃ©rieur
 };
 
 struct EtatFr* Cree_EtatFr(struct Etat etat, char* chemin, int f, struct EtatFr* next){
@@ -70,8 +70,8 @@ struct EtatFr* suppTete(struct EtatFr* tete){
 struct EtatEx{
     struct Etat etat;
     int h;  //valeur de la distance h() la distance de manhattan
-    struct EtatEx *gauche;   //contient un noeud avec une valeur de f est inférieur
-    struct EtatEx *droite;   //contient un noeud avec une valeur de f est supérieur
+    struct EtatEx *gauche;   //contient un noeud avec une valeur de f est infÃ©rieur
+    struct EtatEx *droite;   //contient un noeud avec une valeur de f est supÃ©rieur
 };
 
 
@@ -110,7 +110,7 @@ struct EtatEx* addEx(struct EtatEx* etatEx, struct Etat etat,int h){
     return etatEx;
 }
 
-//retourn 1 si les etats sont égaux, 0 sinon
+//retourn 1 si les etats sont Ã©gaux, 0 sinon
 int etatsEgaux(struct Etat a, struct Etat b){
     if(a.colonne!=b.colonne||a.ligne!=b.ligne){
         return 0;
@@ -128,7 +128,7 @@ int etatsEgaux(struct Etat a, struct Etat b){
     return 1;
 }
 
-//retourne 1 si l'état à déjà été exploré, 0 sinon
+//retourne 1 si l'Ã©tat Ã  dÃ©jÃ  Ã©tÃ© explorÃ©, 0 sinon
 int isEx(struct EtatEx* listeEx, struct Etat etat, int h){
     if(listeEx==NULL){
         return 0;
@@ -192,8 +192,8 @@ int testB(struct Etat tab)
     else {return 1;}
 }
 
-//deplace la case vide à gauche
-//donc on va échanger sa valeur avec la case à sa gauche
+//deplace la case vide Ã  gauche
+//donc on va Ã©changer sa valeur avec la case Ã  sa gauche
 struct Etat gauche (struct Etat etat)
 {
     int colonne = etat.colonne;
@@ -205,7 +205,7 @@ struct Etat gauche (struct Etat etat)
     return etat;
 }
 
-//deplace la case vide à droite...
+//deplace la case vide Ã  droite...
 struct Etat droite (struct Etat etat)
 {
     int colonne = etat.colonne;
@@ -240,11 +240,12 @@ struct Etat bas (struct Etat etat)
     etat.ligne += 1;
     return etat;
 }
-// crée un taquin resolu
+// crÃ©e un taquin resolu
 struct Etat resolu()
 {
     struct Etat tabFinal;
     int j,i,x = 0;
+    x=1;
     for(j =0; j<3; j++)
     {
         for (i = 0; i<3; i++)
@@ -264,7 +265,7 @@ int distance (int ligne1, int colonne1, int ligne2, int colonne2)
     return fabs(ligne2 - ligne1) + fabs(colonne2 - colonne1);
 
 }
-//Calcule la distance manhattan (de l'etat actuel à l'état final)
+//Calcule la distance manhattan (de l'etat actuel Ã  l'Ã©tat final)
 int h(struct Etat init)
 {
     int a,i,j, result=0;
@@ -284,8 +285,8 @@ int h(struct Etat init)
     return result;
 }
 
-// crée un taquin aleatoire valide
-//on va simplement crée un taquin resolu, et le mélanger aléatoirement
+// crÃ©e un taquin aleatoire valide
+//on va simplement crÃ©e un taquin resolu, et le mÃ©langer alÃ©atoirement
 struct Etat aleatoire()
 {
     struct Etat tab = resolu();
@@ -307,7 +308,7 @@ char* ecrire(char* chaine,char c){
     char* nouvelle=malloc(sizeof(char)*100);
     nouvelle[0]=c;
     int i = 0;
-    while(chaine[i] != '\0') // On boucle tant qu'on n'est pas arrivé à la fin F
+    while(chaine[i] != '\0') // On boucle tant qu'on n'est pas arrivÃ© Ã  la fin F
     {
         nouvelle[i+1]=chaine[i];
         i++;
@@ -321,7 +322,7 @@ int longueurChaine(char* chaine)
     int nombreDeCaracteres = 0;
     char caractereActuel = chaine[0];
 
-    while(caractereActuel != '\0') // On boucle tant qu'on n'est pas arrivé à la fin F
+    while(caractereActuel != '\0') // On boucle tant qu'on n'est pas arrivÃ© Ã  la fin F
     {
         caractereActuel = chaine[nombreDeCaracteres];
         nombreDeCaracteres++;
