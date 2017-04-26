@@ -245,7 +245,7 @@ struct Etat resolu()
 {
     struct Etat tabFinal;
     int j,i,x = 0;
-    x=1;
+	
     for(j =0; j<3; j++)
     {
         for (i = 0; i<3; i++)
