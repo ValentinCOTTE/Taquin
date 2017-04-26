@@ -267,7 +267,7 @@ int distance (int ligne1, int colonne1, int ligne2, int colonne2)
 //Calcule la distance manhattan (de l'etat actuel à l'état final)
 int h(struct Etat ini)
 {
-    int h=1;
+    int h=6;
     int pi[6][9] = {{36,12,12,4,1,1,4,1,0},
                 {8,7,6,5,4,3,2,1,0},
                 {8,7,6,5,4,3,2,1,0},
@@ -356,6 +356,9 @@ void afficherChaine(char* chaine)
 
 
 char* solution(struct Etat initial){
+
+    int nbetats=0;
+
     char* chemin=malloc(sizeof(char)*100);
     chemin[0]=' ';
     chemin[1]='\0';
@@ -368,15 +371,19 @@ char* solution(struct Etat initial){
         char* b=ecrire(chemin,'B');
         int c=1+h(initial);
         listeFr=addFr(listeFr,a,b,c);
+        nbetats++;
     }
     if(testH(initial)==1){
         listeFr=addFr(listeFr,haut(initial),ecrire(chemin,'H'),1+h(initial));
+        nbetats++;
     }
     if(testG(initial)==1){
         listeFr=addFr(listeFr,gauche(initial),ecrire(chemin,'G'),1+h(initial));
+        nbetats++;
     }
     if(testD(initial)==1){
         listeFr=addFr(listeFr,droite(initial),ecrire(chemin,'D'),1+h(initial));
+        nbetats++;
     }
     while(etatsEgaux(actu,resolu())!=1){
         actu=listeFr->etat;
@@ -388,41 +395,45 @@ char* solution(struct Etat initial){
         char* b1=ecrire(chemin,'B');
         int c1=1+longueurChaine(chemin)+h(actu);
         listeFr=addFr(listeFr,a1,b1,c1);
+        nbetats++;
         }
         if(testH(actu)==1&&chemin[0]!='B'){
             struct Etat a2=haut(actu);
             char* b2=ecrire(chemin,'H');
             int c2=1+longueurChaine(chemin)+h(actu);
             listeFr=addFr(listeFr,a2,b2,c2);
+            nbetats++;
         }
         if(testG(actu)==1&&chemin[0]!='D'){
             listeFr=addFr(listeFr,gauche(actu),ecrire(chemin,'G'),1+longueurChaine(chemin)+h(actu));
+            nbetats++;
         }
         if(testD(actu)==1&&chemin[0]!='G'){
             listeFr=addFr(listeFr,droite(actu),ecrire(chemin,'D'),1+longueurChaine(chemin)+h(actu));
+            nbetats++;
         }
     }
+    printf("\n%d Etats explorés",nbetats);
+    printf("\n%d longueur du chemin",longueurChaine(chemin));
     printf("\nSolution:\n");
     return chemin;
 }
 
 int main()
 {
-    struct Etat etat = aleatoire();
+    //struct Etat etat = aleatoire();
 
-/*   //Saisie manuel
+ //Saisie manuel
     struct Etat etat;
-    etat.tab[0][0]=3;etat.tab[0][1]=6;etat.tab[0][2]=5;
-    etat.tab[1][0]=8;etat.tab[1][1]=1;etat.tab[1][2]=0;
-    etat.tab[2][0]=2;etat.tab[2][1]=7;etat.tab[2][2]=4;
-    etat.ligne=1;
-    etat.colonne=0;
-*/
+    etat.tab[0][0]=2;etat.tab[0][1]=0;etat.tab[0][2]=8;
+    etat.tab[1][0]=3;etat.tab[1][1]=1;etat.tab[1][2]=7;
+    etat.tab[2][0]=4;etat.tab[2][1]=5;etat.tab[2][2]=6;
+    etat.ligne=0;
+    etat.colonne=2;
+
     afficher(etat);
     printf("\n");
     afficherChaine(solution(etat));
-
-
-
+    printf("\n");
     return 0;
 }
