@@ -276,7 +276,7 @@ int h(struct Etat init)
             {
                 if (init.tab [i][j] == a)
                 {
-                     result += distance(a/3, a% 3, i,j);  //a/3 ligne de la valeur a avec un taquin resolu
+                     result += distance(a/3, a%3, i,j);  //a/3 ligne de la valeur a avec un taquin resolu
                 }                                        //a%3 colonne de la valeur a avec un taquin resolu
             }
         }
@@ -335,6 +335,7 @@ void afficherChaine(char* chaine)
     char caractereActuel = chaine[i];
 
     i=longueurChaine(chaine);
+    i=i-3;
 
     for(i;i>=0;i--)
     {
@@ -398,14 +399,14 @@ char* solution(struct Etat initial){
 
 int main()
 {
-     struct Etat etat = aleatoire();
+    struct Etat etat = aleatoire();
 
-/*    //Saisie manuel
+/*   //Saisie manuel
     struct Etat etat;
-    etat.tab[0][0]=3;etat.tab[0][1]=0;etat.tab[0][2]=2;
-    etat.tab[1][0]=6;etat.tab[1][1]=1;etat.tab[1][2]=7;
-    etat.tab[2][0]=8;etat.tab[2][1]=5;etat.tab[2][2]=4;
-    etat.ligne=2;
+    etat.tab[0][0]=3;etat.tab[0][1]=6;etat.tab[0][2]=5;
+    etat.tab[1][0]=8;etat.tab[1][1]=1;etat.tab[1][2]=0;
+    etat.tab[2][0]=2;etat.tab[2][1]=7;etat.tab[2][2]=4;
+    etat.ligne=1;
     etat.colonne=0;
 */
     afficher(etat);
