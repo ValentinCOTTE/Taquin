@@ -4,23 +4,23 @@
 #include <time.h>
 #include <stdbool.h>
 
-typedef struct
+struct Etat
 {
     int tab[3][3];
     int ligne;  //positon x de la case vide
     int colonne;    //position y de la case vide
-} Etat;
+};
 
 
 struct EtatFr
 {
-    Etat etat;
+    struct Etat etat;
     char* chemin;
     int f;  //valeur de la distance g()+h()
     struct EtatFr* next;   //contient un noeud avec une valeur de f est inférieur
 };
 
-struct EtatFr* Cree_EtatFr(Etat etat, char* chemin, int f, struct EtatFr* next){
+struct EtatFr* Cree_EtatFr(struct Etat etat, char* chemin, int f, struct EtatFr* next){
     struct EtatFr* newEtatFr = malloc(sizeof(struct EtatFr));
 
     newEtatFr->etat = etat;
@@ -38,10 +38,13 @@ struct EtatFr* Cree_EtatFr(Etat etat, char* chemin, int f, struct EtatFr* next){
     return newEtatFr;
 }
 
-struct EtatFr* addFr(struct EtatFr* etatFr,Etat etat,char* chemin,int f){
+struct EtatFr* addFr(struct EtatFr* etatFr,struct Etat etat,char* chemin,int f){
     if(etatFr==NULL){
-        struct EtatFr* nouveau=Cree_EtatFr(etat,chemin,f,etatFr);
+        struct EtatFr* nouveau=Cree_EtatFr(etat,chemin,f,NULL);
         return nouveau;
+    }
+    if(etatsEgaux(etatFr->etat,etat)==1){
+        return etatFr;
     }
     if (f<=etatFr->f){
         struct EtatFr* nouveau=Cree_EtatFr(etat,chemin,f,etatFr);
@@ -52,7 +55,7 @@ struct EtatFr* addFr(struct EtatFr* etatFr,Etat etat,char* chemin,int f){
             etatFr->next=addFr(etatFr->next,etat,chemin,f);
         }
         else{
-            struct EtatFr* nouveau=Cree_EtatFr(etat,chemin,f,etatFr);
+            struct EtatFr* nouveau=Cree_EtatFr(etat,chemin,f,NULL);
             etatFr->next=nouveau;
             return etatFr;
         }
@@ -65,14 +68,14 @@ struct EtatFr* suppTete(struct EtatFr* tete){
 }
 
 struct EtatEx{
-    Etat etat;
+    struct Etat etat;
     int h;  //valeur de la distance h() la distance de manhattan
     struct EtatEx *gauche;   //contient un noeud avec une valeur de f est inférieur
     struct EtatEx *droite;   //contient un noeud avec une valeur de f est supérieur
 };
 
 
-struct EtatEx* Cree_EtatEx(Etat etat,int h,struct EtatEx* gauche,struct EtatEx* droite){
+struct EtatEx* Cree_EtatEx(struct Etat etat,int h,struct EtatEx* gauche,struct EtatEx* droite){
     struct EtatEx* newEtatEx = malloc(sizeof(struct EtatEx));
 
     newEtatEx->etat =etat;
@@ -85,7 +88,7 @@ struct EtatEx* Cree_EtatEx(Etat etat,int h,struct EtatEx* gauche,struct EtatEx* 
     return newEtatEx;
 }
 
-struct EtatEx* addEx(struct EtatEx* etatEx, Etat etat,int h){
+struct EtatEx* addEx(struct EtatEx* etatEx, struct Etat etat,int h){
     if (h<=etatEx->h){
         if(etatEx->gauche==NULL){
             struct EtatEx* nouveau=Cree_EtatEx(etat,h,NULL,NULL);
@@ -108,7 +111,7 @@ struct EtatEx* addEx(struct EtatEx* etatEx, Etat etat,int h){
 }
 
 //retourn 1 si les etats sont égaux, 0 sinon
-int etatsEgaux(Etat a, Etat b){
+int etatsEgaux(struct Etat a, struct Etat b){
     if(a.colonne!=b.colonne||a.ligne!=b.ligne){
         return 0;
     }
@@ -126,7 +129,7 @@ int etatsEgaux(Etat a, Etat b){
 }
 
 //retourne 1 si l'état à déjà été exploré, 0 sinon
-int isEx(struct EtatEx* listeEx, Etat etat, int h){
+int isEx(struct EtatEx* listeEx, struct Etat etat, int h){
     if(listeEx==NULL){
         return 0;
     }
@@ -143,7 +146,7 @@ int isEx(struct EtatEx* listeEx, Etat etat, int h){
 
 
 //Affiche l'etat du taquin
-void afficher (Etat etat)
+void afficher (struct Etat etat)
 {
     int i,j;
     for ( i = 0; i<3; i++)
@@ -165,25 +168,25 @@ void afficher (Etat etat)
 }
 
 //la case vide est-elle a gauche? 1 si oui, 0 sinon
-int testG(Etat tab)
+int testG(struct Etat tab)
 {
     if (tab.colonne == 0) return 0;
     else {return 1;}
 }
 //droite?
-int testD(Etat tab)
+int testD(struct Etat tab)
 {
     if (tab.colonne == 2) return 0;
     else {return 1;}
 }
 //en haut?
-int testH(Etat tab)
+int testH(struct Etat tab)
 {
     if (tab.ligne == 0) return 0;
     else {return 1;}
 }
 //en bas?
-int testB(Etat tab)
+int testB(struct Etat tab)
 {
     if (tab.ligne == 2) return 0;
     else {return 1;}
@@ -191,7 +194,7 @@ int testB(Etat tab)
 
 //deplace la case vide à gauche
 //donc on va échanger sa valeur avec la case à sa gauche
-Etat gauche (Etat etat)
+struct Etat gauche (struct Etat etat)
 {
     int colonne = etat.colonne;
     int ligne = etat.ligne;
@@ -203,7 +206,7 @@ Etat gauche (Etat etat)
 }
 
 //deplace la case vide à droite...
-Etat droite (Etat etat)
+struct Etat droite (struct Etat etat)
 {
     int colonne = etat.colonne;
     int ligne = etat.ligne;
@@ -215,7 +218,7 @@ Etat droite (Etat etat)
 }
 
 //deplace la case vide en haut...
-Etat haut (Etat etat)
+struct Etat haut (struct Etat etat)
 {
     int colonne = etat.colonne;
     int ligne = etat.ligne;
@@ -227,7 +230,7 @@ Etat haut (Etat etat)
 }
 
 //deplace la case vide en bas...
-Etat bas (Etat etat)
+struct Etat bas (struct Etat etat)
 {
     int colonne = etat.colonne;
     int ligne = etat.ligne;
@@ -238,9 +241,9 @@ Etat bas (Etat etat)
     return etat;
 }
 // crée un taquin resolu
-Etat resolu()
+struct Etat resolu()
 {
-    Etat tabFinal;
+    struct Etat tabFinal;
     int j,i,x = 0;
     for(j =0; j<3; j++)
     {
@@ -262,7 +265,7 @@ int distance (int ligne1, int colonne1, int ligne2, int colonne2)
 
 }
 //Calcule la distance manhattan (de l'etat actuel à l'état final)
-int h(Etat init)
+int h(struct Etat init)
 {
     int a,i,j, result=0;
     for ( a = 0; a < 9; a++)
@@ -283,9 +286,9 @@ int h(Etat init)
 
 // crée un taquin aleatoire valide
 //on va simplement crée un taquin resolu, et le mélanger aléatoirement
-Etat aleatoire()
+struct Etat aleatoire()
 {
-    Etat tab = resolu();
+    struct Etat tab = resolu();
 
     int i = 0;
 	int nombre_aleatoire = 0;
@@ -301,19 +304,16 @@ Etat aleatoire()
 }
 
 char* ecrire(char* chaine,char c){
-
-    int nombreDeCaracteres = 0;
-    printf("%c",chaine);
-    char caractereActuel = chaine;
-    printf("\n plop");
-    while(caractereActuel != 'F'); // On boucle tant qu'on n'est pas arrivé à la fin F
+    char* nouvelle=malloc(sizeof(char)*100);
+    nouvelle[0]=c;
+    int i = 0;
+    while(chaine[i] != '\0') // On boucle tant qu'on n'est pas arrivé à la fin F
     {
-        nombreDeCaracteres++;
+        nouvelle[i+1]=chaine[i];
+        i++;
     }
-    printf("\n plip");
-    chaine[nombreDeCaracteres]=c;
-    chaine[nombreDeCaracteres+1]='F';
-    return chaine;
+    nouvelle[i+1]='\0';
+    return nouvelle;
 }
 
 int longueurChaine(char* chaine)
@@ -321,7 +321,7 @@ int longueurChaine(char* chaine)
     int nombreDeCaracteres = 0;
     char caractereActuel = chaine[0];
 
-    while(caractereActuel != 'F'); // On boucle tant qu'on n'est pas arrivé à la fin F
+    while(caractereActuel != '\0') // On boucle tant qu'on n'est pas arrivé à la fin F
     {
         caractereActuel = chaine[nombreDeCaracteres];
         nombreDeCaracteres++;
@@ -331,26 +331,27 @@ int longueurChaine(char* chaine)
 
 void afficherChaine(char* chaine)
 {
-    int nombreDeCaracteres = 0;
+    int i = 0;
     char caractereActuel = chaine[0];
-
-     while(caractereActuel != 'F');
+     while(caractereActuel!='\0')
     {
         printf("%c",caractereActuel);
-        nombreDeCaracteres++;
+        i++;
+        caractereActuel=chaine[i];
     }
 }
 
-/*
-char* solution(Etat initial){
-    char chemin[100];
-    chemin[0]='F'
-    Etat actu=initial;
+
+char* solution(struct Etat initial){
+    char* chemin=malloc(sizeof(char)*100);
+    chemin[0]='F';
+    chemin[1]='\0';
+    struct Etat actu=initial;
     struct EtatEx* listeEx=Cree_EtatEx(initial,h(initial),NULL,NULL);
     struct EtatFr* listeFr=NULL;
 
     if(testB(initial)==1){
-        Etat a=bas(initial);
+        struct Etat a=bas(initial);
         char* b=ecrire(chemin,'B');
         int c=1+h(initial);
         listeFr=addFr(listeFr,a,b,c);
@@ -364,16 +365,24 @@ char* solution(Etat initial){
     if(testD(initial)==1){
         listeFr=addFr(listeFr,droite(initial),ecrire(chemin,'D'),1+h(initial));
     }
-
     while(etatsEgaux(actu,resolu())!=1){
         actu=listeFr->etat;
         chemin=listeFr->chemin;
+        afficherChaine(chemin);
+        printf(" ");
         listeFr=suppTete(listeFr);
+
         if(testB(actu)==1){
-        listeFr=addFr(listeFr,bas(actu),ecrire(chemin,'B'),1+longueurChaine(chemin)+h(actu));
+        struct Etat a1=bas(actu);
+        char* b1=ecrire(chemin,'B');
+        int c1=1+longueurChaine(chemin)+h(actu);
+        listeFr=addFr(listeFr,a1,b1,c1);
         }
         if(testH(actu)==1){
-            listeFr=addFr(listeFr,haut(actu),ecrire(chemin,'H'),1+longueurChaine(chemin)+h(actu));
+            struct Etat a2=haut(actu);
+            char* b2=ecrire(chemin,'H');
+            int c2=1+longueurChaine(chemin)+h(actu);
+            listeFr=addFr(listeFr,a2,b2,c2);
         }
         if(testG(actu)==1){
             listeFr=addFr(listeFr,gauche(actu),ecrire(chemin,'G'),1+longueurChaine(chemin)+h(actu));
@@ -382,16 +391,17 @@ char* solution(Etat initial){
             listeFr=addFr(listeFr,droite(actu),ecrire(chemin,'D'),1+longueurChaine(chemin)+h(actu));
         }
     }
+    printf("\nSolution:\n");
     return chemin;
 }
-*/
+
 int main()
 {
     afficher(resolu());
-    Etat etat = aleatoire();
+    struct Etat etat = aleatoire();
     afficher(etat);
     printf("\n");
-    //afficherChaine(solution(etat));
+    afficherChaine(solution(etat));
 
 
 
