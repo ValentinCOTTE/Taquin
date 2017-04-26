@@ -1,0 +1,19 @@
+void afficherChaine(char* chaine)
+{
+    int i = 0;
+    char caractereActuel = chaine[i];
+     while(caractereActuel!='\0')
+    {
+        printf("%c",caractereActuel);
+        i++;
+        caractereActuel=chaine[i];
+    }
+
+    i--;
+    for(i;i>=0;i--)
+    {
+        printf("%c",chaine[i]);
+
+    }
+
+}
