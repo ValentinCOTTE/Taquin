@@ -267,7 +267,7 @@ int distance (int ligne1, int colonne1, int ligne2, int colonne2)
 //Calcule la distance manhattan (de l'etat actuel à l'état final)
 int h(struct Etat ini)
 {
-    int h=6;
+    int h=1;
     int pi[6][9] = {{36,12,12,4,1,1,4,1,0},
                 {8,7,6,5,4,3,2,1,0},
                 {8,7,6,5,4,3,2,1,0},
