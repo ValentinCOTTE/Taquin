@@ -344,7 +344,7 @@ void afficherChaine(char* chaine)
 
 char* solution(struct Etat initial){
     char* chemin=malloc(sizeof(char)*100);
-    chemin[0]='F';
+    chemin[0]=' ';
     chemin[1]='\0';
     struct Etat actu=initial;
     struct EtatEx* listeEx=Cree_EtatEx(initial,h(initial),NULL,NULL);
@@ -368,8 +368,6 @@ char* solution(struct Etat initial){
     while(etatsEgaux(actu,resolu())!=1){
         actu=listeFr->etat;
         chemin=listeFr->chemin;
-        afficherChaine(chemin);
-        printf(" ");
         listeFr=suppTete(listeFr);
 
         if(testB(actu)==1){
@@ -397,8 +395,17 @@ char* solution(struct Etat initial){
 
 int main()
 {
-    afficher(resolu());
-    struct Etat etat = aleatoire();
+     struct Etat etat = aleatoire();
+
+    //Saisie manuel
+/*    struct Etat etat;
+    etat.tab[0][0]=8;etat.tab[0][1]=1;etat.tab[0][2]=2;
+    etat.tab[1][0]=0;etat.tab[1][1]=5;etat.tab[1][2]=7;
+    etat.tab[2][0]=4;etat.tab[2][1]=3;etat.tab[2][2]=6;
+    etat.ligne=0;
+    etat.colonne=0;
+*/
+
     afficher(etat);
     printf("\n");
     afficherChaine(solution(etat));
