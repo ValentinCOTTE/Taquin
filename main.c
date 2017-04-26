@@ -265,8 +265,16 @@ int distance (int ligne1, int colonne1, int ligne2, int colonne2)
 
 }
 //Calcule la distance manhattan (de l'etat actuel à l'état final)
-int h(struct Etat init)
+int h(struct Etat ini)
 {
+    int h=6;
+    int pi[6][9] = {{36,12,12,4,1,1,4,1,0},
+                {8,7,6,5,4,3,2,1,0},
+                {8,7,6,5,4,3,2,1,0},
+                {8,7,6,5,3,2,4,1,0},
+                {8,7,6,5,3,2,4,1,0},
+                {1,1,1,1,1,1,1,1,0}};
+
     int a,i,j, result=0;
     for ( a = 0; a < 8; a++)
     {
@@ -274,14 +282,15 @@ int h(struct Etat init)
         {
             for (j=0; j<3; j++)
             {
-                if (init.tab [i][j] == a)
+                if (ini.tab [i][j] == a)
                 {
-                     result += distance(a/3, a%3, i,j);  //a/3 ligne de la valeur a avec un taquin resolu
-                }                                        //a%3 colonne de la valeur a avec un taquin resolu
+                     result += (distance(a/3, a%3, i,j) * pi[h-1][a]);
+                }
             }
         }
     }
-    return result;
+    if ((h%2) == 0) return result;
+    else return result/4;
 }
 
 // crée un taquin aleatoire valide
