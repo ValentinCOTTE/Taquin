@@ -268,7 +268,7 @@ int distance (int ligne1, int colonne1, int ligne2, int colonne2)
 int h(struct Etat init)
 {
     int a,i,j, result=0;
-    for ( a = 0; a < 9; a++)
+    for ( a = 0; a < 8; a++)
     {
         for (i=0; i<3; i++)
         {
@@ -276,8 +276,8 @@ int h(struct Etat init)
             {
                 if (init.tab [i][j] == a)
                 {
-                     result += distance(a%3, a/3, i,j);  //a%3 ligne de la valeur a avec un taquin resolu
-                }                                        //a/3 colonne de la valeur a avec un taquin resolu
+                     result += distance(a/3, a% 3, i,j);  //a/3 ligne de la valeur a avec un taquin resolu
+                }                                        //a%3 colonne de la valeur a avec un taquin resolu
             }
         }
     }
@@ -293,7 +293,7 @@ struct Etat aleatoire()
     int i = 0;
 	int nombre_aleatoire = 0;
 	srand(time(NULL)); // initialisation de rand
-	for(i=0; i<100; i++){
+	for(i=0; i<10000; i++){
 		nombre_aleatoire = rand()%4;
 		if (nombre_aleatoire == 0 && testD(tab)) tab = droite(tab);
 		if (nombre_aleatoire == 1 && testG(tab)) tab = gauche(tab);
@@ -332,13 +332,16 @@ int longueurChaine(char* chaine)
 void afficherChaine(char* chaine)
 {
     int i = 0;
-    char caractereActuel = chaine[0];
-     while(caractereActuel!='\0')
+    char caractereActuel = chaine[i];
+
+    i=longueurChaine(chaine);
+
+    for(i;i>=0;i--)
     {
-        printf("%c",caractereActuel);
-        i++;
-        caractereActuel=chaine[i];
+        printf("%c",chaine[i]);
+
     }
+
 }
 
 
@@ -397,15 +400,14 @@ int main()
 {
      struct Etat etat = aleatoire();
 
-    //Saisie manuel
-/*    struct Etat etat;
-    etat.tab[0][0]=8;etat.tab[0][1]=1;etat.tab[0][2]=2;
-    etat.tab[1][0]=0;etat.tab[1][1]=5;etat.tab[1][2]=7;
-    etat.tab[2][0]=4;etat.tab[2][1]=3;etat.tab[2][2]=6;
-    etat.ligne=0;
+/*    //Saisie manuel
+    struct Etat etat;
+    etat.tab[0][0]=3;etat.tab[0][1]=0;etat.tab[0][2]=2;
+    etat.tab[1][0]=6;etat.tab[1][1]=1;etat.tab[1][2]=7;
+    etat.tab[2][0]=8;etat.tab[2][1]=5;etat.tab[2][2]=4;
+    etat.ligne=2;
     etat.colonne=0;
 */
-
     afficher(etat);
     printf("\n");
     afficherChaine(solution(etat));
