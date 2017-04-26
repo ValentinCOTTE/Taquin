@@ -374,22 +374,22 @@ char* solution(struct Etat initial){
         chemin=listeFr->chemin;
         listeFr=suppTete(listeFr);
 
-        if(testB(actu)==1){
+        if(testB(actu)==1&&chemin[0]!='H'){
         struct Etat a1=bas(actu);
         char* b1=ecrire(chemin,'B');
         int c1=1+longueurChaine(chemin)+h(actu);
         listeFr=addFr(listeFr,a1,b1,c1);
         }
-        if(testH(actu)==1){
+        if(testH(actu)==1&&chemin[0]!='B'){
             struct Etat a2=haut(actu);
             char* b2=ecrire(chemin,'H');
             int c2=1+longueurChaine(chemin)+h(actu);
             listeFr=addFr(listeFr,a2,b2,c2);
         }
-        if(testG(actu)==1){
+        if(testG(actu)==1&&chemin[0]!='D'){
             listeFr=addFr(listeFr,gauche(actu),ecrire(chemin,'G'),1+longueurChaine(chemin)+h(actu));
         }
-        if(testD(actu)==1){
+        if(testD(actu)==1&&chemin[0]!='G'){
             listeFr=addFr(listeFr,droite(actu),ecrire(chemin,'D'),1+longueurChaine(chemin)+h(actu));
         }
     }
